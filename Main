@@ -1,0 +1,104 @@
+import re
+import random
+from colorama import Fore, init
+
+init(autoreset=True)
+
+destinations = {
+    "beaches": ["Bali", "Maldives", "Phuket"],
+    "mountains": ["Swiss Alps", "Rocky Mountains", "Himalayas"],
+    "cities": ["Tokyo", "Paris", "New York"]
+}
+
+jokes = [
+    "Why don't programmers like nature? Too many bugs!",
+    "Why did the computer go to the doctor? Because it had a virus!",
+    "Why do travelers always feel warm? Because of all their hot spots!"
+]
+
+
+# Normalize user input
+def normalize_input(text):
+    return re.sub(r"\s+", " ", text.strip().lower())
+
+
+# Recommend travel destinations
+def recommend():
+    while True:
+        print(Fore.CYAN + "\nTravelBot: Beaches, mountains, or cities?")
+        preference = normalize_input(input(Fore.YELLOW + "You: "))
+
+        if preference in destinations:
+            suggestion = random.choice(destinations[preference])
+            print(Fore.GREEN + f"TravelBot: How about {suggestion}?")
+
+            answer = normalize_input(
+                input(Fore.CYAN + "TravelBot: Do you like it? (yes/no)\n"
+                      + Fore.YELLOW + "You: ")
+            )
+
+            if answer == "yes":
+                print(Fore.GREEN + f"TravelBot: Awesome! Enjoy {suggestion}!")
+                break
+            elif answer == "no":
+                print(Fore.RED + "TravelBot: Let's try another destination.")
+            else:
+                print(Fore.RED + "TravelBot: Please answer yes or no.")
+        else:
+            print(Fore.RED + "TravelBot: Invalid destination type.")
+            print("Please choose beaches, mountains, or cities.")
+
+
+# Provide packing tips
+def packing_tips():
+    print(Fore.CYAN + "\nTravelBot: Where to?")
+    location = normalize_input(input(Fore.YELLOW + "You: "))
+
+    while True:
+        print(Fore.CYAN + "TravelBot: How many days?")
+        try:
+            days = int(input(Fore.YELLOW + "You: "))
+
+            if days > 0:
+                break
+
+            print(Fore.RED + "Enter a number greater than zero.")
+
+        except ValueError:
+            print(Fore.RED + "Please enter a valid whole number.")
+
+    print(Fore.GREEN + f"\nPacking tips for {days} days in {location}:")
+    print(Fore.GREEN + "- Pack versatile clothes.")
+    print(Fore.GREEN + "- Bring chargers/adapters.")
+    print(Fore.GREEN + "- Check the weather forecast.")
+
+
+# Tell a random joke
+def tell_joke():
+    print(Fore.YELLOW + f"TravelBot: {random.choice(jokes)}")
+
+
+# Main program menu
+if __name__ == "__main__":
+    print(Fore.CYAN + "Welcome to TravelBot!")
+
+    while True:
+        print("\nWhat would you like to do?")
+        print("1. Travel recommendations")
+        print("2. Packing tips")
+        print("3. Tell me a joke")
+        print("4. Exit")
+
+        choice = input(Fore.YELLOW + "You: ").strip()
+
+        if choice == "1":
+            recommend()
+        elif choice == "2":
+            packing_tips()
+        elif choice == "3":
+            tell_joke()
+        elif choice == "4":
+            print(Fore.GREEN + "TravelBot: Safe travels. Goodbye!")
+            break
+        else:
+            print(Fore.RED + "Please choose an option from 1 to 4.")
